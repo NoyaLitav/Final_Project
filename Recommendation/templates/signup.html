@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}App Sign Up{% endblock %}
+
+{% block extra_styles %}
+   {% load static %}
+    <style>
+    body {
+        background-image: url("{% static 'images/indoor_parking_lot.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        height: 100%;
+        margin: 0;
+    }
+    .header h1 {
+      font-weight: bold;
+      font-size: 3em;
+      text-align: center;
+    }
+    .button-container {
+      margin-top: 10px;
+      text-align: right;
+    }
+    .button-container button,
+    .button-container a {
+      margin-left: 10px;
+    }
+    </style>
+{% endblock %}
+
+{% block content %}
+<main>
+<head class="w3-display-container w3-content" style="max-width:1500px;">
+  <img class="w3-image" style="min-width:1000px" width="1600" height="800">
+  <div class="w3-display-middle w3-padding w3-col l6 m8">
+    <div class="header">
+    <div class="container">
+      <h1>Sign up</h1>
+    </div>
+    </div>
+
+    <div class="w3-container w3-white w3-padding-16">
+      <form class='signupForm' name="SignForm" method="post" style='margin-top: 0px;'>
+        {% csrf_token %}
+
+      <div class="w3-row-padding" style="margin:0 -16px;">
+        <div class="w3-half w3-margin-bottom">
+          <label class='label' for="name"><i class="fa fa-user w3-text" style="width:20px"></i>Name</label>
+          <input type="text" placeholder="Name" name="name" id="name" class='w3-input w3-border' autocomplete="off" maxlength="32" required="">
+         </div>
+        <div class="w3-half">
+          <label class='label' for="email"><i class="fa fa-envelope-o w3-text" style="width:25px"></i>Email</label>
+          <input type="text" placeholder="Email" name="email" id="email" class='w3-input w3-border' autocomplete="off" maxlength="150" required="">
+        </div>
+      </div>
+
+      <div class="w3-row-padding" style="margin:0 -16px;">
+        <div class="w3-half w3-margin-bottom">
+          <label class='label' for="username"><i class="fa fa-street-view w3-text" style="width:20px"></i>Username</label>
+          <input type="text" placeholder="Username" name="username" id="username" class='w3-input w3-border' autocomplete="off" maxlength="32" required="">
+        </div>
+        <div class="w3-half">
+          <label class='label' for="password"><i class="fa fa-lock w3-text" style="width:20px"></i>Password</label>
+          <input type="password" placeholder="Password" name="password" id="password" class='w3-input w3-border' maxlength="150" required="">
+        </div>
+      </div>
+
+      <div class="w3-row-padding" style="margin:0 -16px;">
+        <div class="w3-half">
+          <label class='label' for="default_address"><i class="fa fa-map-marker w3-text" style="width:20px"></i>Default Address</label>
+          <input type="text" placeholder="Address" name="default_address" id="default_address" class='w3-input w3-border' maxlength="150" required="">
+        </div>
+        <div class="w3-half w3-margin-bottom">
+          <label class='label' for="parking_area"><i class="fa fa-car w3-text" style="width:25px"></i>Parking Area</label>
+          <input type="text" placeholder="Parking Area" name="parking_area" id="parking_area" class='w3-input w3-border' maxlength="2">
+        </div>
+      </div>
+
+      <div class="w3-row-padding" style="margin:0 -16px;">
+        <div class="w3-half w3-margin-bottom">
+          <label class='label' for="default_preferences"><i class="fa fa-question w3-text" style="width:20px"></i>Default Preferences</label>
+          <br>
+          <div class="group">
+              <div class="w3-margin-left">
+                  <input type="radio" id="pay-less" name="preferences" value="pay-less" required>
+                  <label for="pay-less">Pay Less</label><br>
+              </div>
+              <div class="w3-margin-left">
+                  <input type="radio" id="walk-less" name="preferences" value="walk-less" required>
+                  <label for="walk-less">Walk Less</label>
+              </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="w3-row-padding" style="margin:0 -16px;">
+        <div class="w3-half">
+          <label class='label' for="birth_year"><i class="fa fa-calendar w3-text" style="width:20px"></i>Birth Year</label>
+          <input type="number" placeholder="Birth Year" name="birth_year" id="birth_year" class='w3-input w3-border' required="">
+        </div>
+        <div class="w3-half w3-margin-bottom">
+          <label class='label' for="gender"><i class="fa fa-genderless w3-text" style="width:20px"></i>Gender</label>
+          <select name="gender" id="gender" class='w3-input w3-border' required="">
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+            <option value="O">Other</option>
+          </select>
+        </div>
+      </div>
+
+      {% if error %}
+      <div class="w3-row-padding" style="margin:0 -16px;">
+        <div class="w3-half w3-margin-bottom">
+          <span class="w3-text-red">{{ error }}</span>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if email_error %}
+      <div class="w3-row-padding" style="margin:0 -16px;">
+        <div class="w3-half w3-margin-bottom">
+          <span class="w3-text-red">This email is already in use, please choose another email</span>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if userName_error %}
+      <div class="w3-row-padding" style="margin:0 -16px;">
+        <div class="w3-half w3-margin-bottom">
+          <span class="w3-text-red">This username is already in use, please choose another username</span>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="button-container">
+        <a class="w3-button w3-light-grey login-btn" href="{% url 'login' %}">Have an account? Log in</a>
+        <button class="w3-button w3-dark-grey signup-btn">Sign Up</button>
+      </div>
+
+      </form>
+    </div>
+  </div>
+</head>
+</main>
+{% endblock %}

@@ -1,0 +1,25 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center; /* Center the sections horizontally */
+}
+
+.auth-section h2 {
+  margin-right: 10px; /* Adjust margin to remove the gap */
+}
+
+.auth-section .w3-button {
+  margin-left: 10px;
+}
+
+.w3-button.w3-dark-grey {
+  font-size: 1.2em; /* Adjust the size as needed */
+}

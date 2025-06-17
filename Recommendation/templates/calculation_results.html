@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculation results</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_calculation_results.css' %}">
+</head>
+<body>
+    <h1>Parking results</h1>
+
+    <p><strong>Day and time:</strong> {{ current_datetime }}</p>
+    <p><strong>Destination:</strong> {{ destination }}</p>
+
+    {% if results %}
+        <h2>Initial Results</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>שם החניה</th>
+                    <th>כתובת החניה</th>
+                    <th>זמן ההליכה לחניה</th>
+                    {% if parking_duration == "short-term" %}
+                        <th>עלות חניה ל-2 שעות</th>
+                    {% else %}
+                        <th>עלות חניה ל-12 שעות</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                    <tr>
+                        <td>{{ result.parking_lot_name }}</td>
+                        <td>{{ result.parking_lot_address }}</td>
+                        <td class="ltr-text">{{ result.walking_time }} mins</td>
+                        {% if parking_duration == "short-term" %}
+                            <td class="ltr-text">{{ result.cost_2_hours }} ₪</td>
+                        {% else %}
+                            <td class="ltr-text">{{ result.cost_12_hours }} ₪</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Recommended Parking Lots</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>שם החניה</th>
+                    <th>כתובת החניה</th>
+                    <th>זמן ההליכה לחניה</th>
+                    {% if parking_duration == "short-term" %}
+                        <th>עלות חניה ל-2 שעות</th>
+                    {% else %}
+                        <th>עלות חניה ל-12 שעות</th>
+                    {% endif %}
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lot in results %}
+                    <tr>
+                        <td>{{ lot.parking_lot_name }}</td>
+                        <td>{{ lot.parking_lot_address }}</td>
+                        <td class="ltr-text">{{ lot.walking_time }} mins</td>
+                        {% if parking_duration == "short-term" %}
+                            <td class="ltr-text">{{ lot.cost_2_hours }} ₪</td>
+                        {% else %}
+                            <td class="ltr-text">{{ lot.cost_12_hours }} ₪</td>
+                        {% endif %}
+                        <td class="ltr-text">{{ lot.score }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>לא ניתן למצוא מרחק לחניה.</p>
+    {% endif %}
+
+    <a href="/" class="button">Back to homepage</a>
+</body>
+</html>

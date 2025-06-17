@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Find a Parking Place!{% endblock %}
+
+{% block extra_styles %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style_homepage.css' %}">
+<style>
+  /* Background image */
+  body {
+      background-image: url("{% static 'images/homepage.png' %}");
+      background-size: cover;
+      background-position: center;
+      height: 100%;
+      margin: 0;
+  }
+  .header h1 {
+    font-weight: bold;
+    font-size: calc(2.5rem + 1vw); /* Responsive font size */
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Ellipsis for overflow text */
+  }
+  .container {
+      text-align: center;
+      max-width: 90%; /* Adjust the width if necessary */
+      margin: auto; /* Center the container */
+      padding: 0 10px; /* Add some padding for better spacing */
+  }
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 25vh; /* Adjust height to allocate space for the header */
+    padding: 20px; /* Add some padding if necessary */
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<main>
+<head class="w3-display-container w3-content" style="max-width:1500px;">
+  <img class="w3-image" style="min-width:1000px" width="1600" height="800">
+
+  <div class="w3-display-middle w3-padding w3-col 16 m8">
+
+    <div class="header">
+      <div class="container">
+        <h1>Welcome, we will find you a parking place soon!</h1>
+        <h2>Find a convenient and affordable parking spot near you.</h2>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="hero-text">
+        <div class="auth-section">
+          <h2>Have an account?</h2>
+          <a class="w3-button w3-dark-grey" href="{% url 'login' %}">Log In</a>
+        </div>
+        <br>
+        <div class="auth-section">
+          <h2>New User?</h2>
+          <a class="w3-button w3-dark-grey" href="{% url 'signup' %}">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</head>
+</main>
+{% endblock %}

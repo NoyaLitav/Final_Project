@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}Find a Parking Place!{% endblock %}
+
+{% block extra_styles %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style_destination.css' %}">
+<style>
+    /* Background image */
+    body {
+        background-image: url("{% static 'images/by_the_beach.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        height: 100%;
+        margin: 0;
+    }
+    h2 {
+        font-weight: bold;
+        font-size: 4em;
+        text-align: left;
+    }
+    h1 {
+       text-align: left;
+    }
+</style>
+{% endblock %}
+
+{% block extra_nav_items %}
+<!--    <a href="#contact" class="w3-bar-item w3-button w3-mobile">My parking history</a>-->
+    <a href="#contact" class="w3-bar-item w3-button w3-right w3-light-grey w3-mobile"><i class="fa fa-search w3-margin-right"></i>New search</a>
+{% endblock %}
+
+{% block content %}
+{% if request.GET.error %}
+  <div class="w3-container w3-red w3-margin">
+    <p>An error occurred during the recommendation process. Retrying...</p>
+  </div>
+  <script>
+    setTimeout(function() {
+      location.reload();  // Retry after displaying the error
+    }, 2000);  // Retry after 2 seconds
+  </script>
+{% endif %}
+
+<main>
+  <head class="w3-display-container w3-content" style="max-width:1500px;">
+    <img class="w3-image" style="min-width:1000px" width="1600" height="800">
+    <div class="w3-display-left w3-padding w3-col l6 m8 location">
+      <div class="welcome-container">
+          <h2>Welcome, {{username}}!</h2>
+      </div>
+      <div class="w3-container w3-red">
+          <h1>Where do you want to go today?</h1>
+      </div>
+      <div class="w3-container w3-white w3-padding-16">
+
+        <form class="destinationForm" action="{% url 'recommendation_results' %}" name="destinationForm" method="post" style='margin-top: 0px; position: relative;'>
+            {% csrf_token %}
+            <input type="hidden" name="username" value="{{ username }}">
+            <div class="w3-row-padding" style="margin:0 -16px;">
+              <div class="w3-margin-bottom">
+                <label for="destination" class="bold-label"><i class="fa fa-map-marker w3-text-red" style="width:20px"></i>Your Destination:</label>
+                <button class="w3-button w3-light-grey w3-mobile" type="button" id="useDefaultAddress">Use Default Address</button>
+                <input type="text" class="w3-input w3-border" placeholder='Street Name and Number, City' id="destination" name="destination" size="15" required>
+              </div>
+              <div class="w3-margin-bottom">
+                <label class="bold-label"><i class="fa fa-question w3-text-red" style="width:20px"></i>What do you prefer today?</label>
+                <button class="w3-button w3-light-grey w3-mobile" type="button" id="useDefaultPreferences">Use Default Preferences</button>
+                <br>
+                <div class="group">
+                    <div class="w3-margin-left">
+                        <input type="radio" id="Pay Less" name="preferences" value="Pay Less" required>
+                        <label for="Pay Less">Pay Less</label><br>
+                    </div>
+                    <div class="w3-margin-left">
+                        <input type="radio" id="Walk Less" name="preferences" value="Walk Less" required>
+                        <label for="Walk Less">Walk Less</label>
+                    </div>
+                </div>
+              </div>
+              <div class="w3-row-padding" style="margin:8px -16px;">
+                <div class="w3-half w3-margin-bottom">
+                  <label class="bold-label"><i class="fa fa-clock-o w3-text-red" style="width:20px"></i>Parking Duration:</label><br>
+                  <div class="group">
+                    <div class="w3-margin-left">
+                      <input type="radio" id="short-term" name="parking_duration" value="short-term" required>
+                      <label for="short-term">Short-term</label><br>
+                    </div>
+                    <div class="w3-margin-left">
+                      <input type="radio" id="long-term" name="parking_duration" value="long-term" required>
+                      <label for="long-term">Long-term</label>
+                    </div>
+                  </div>
+                </div>
+                <button class="w3-button w3-dark-grey submit-button" type="submit"><i class="fa fa-search w3-margin-right"></i> Find the perfect parking spot</button>
+              </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </head>
+</main>
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function() {
+<!--      // Check if there is an error in the URL-->
+<!--      var errorFlag = "{{ error|default_if_none:False }}";-->
+
+<!--      if (errorFlag == 'True') {-->
+<!--&lt;!&ndash;          alert("An error occurred during the recommendation process. Retrying...");&ndash;&gt;-->
+
+<!--          // Wait for 2 seconds before retrying-->
+<!--          setTimeout(function() {-->
+<!--              // Resubmit the form automatically-->
+<!--              document.forms['destinationForm'].submit();-->
+<!--          }, 2000);  // 2 seconds-->
+<!--      }-->
+
+      $('#useDefaultAddress').click(function() {
+          $.getJSON("{% url 'get_default_address' %}", function(data) {
+              console.log(data);
+              $('#destination').val(data.default_address);
+          });
+      });
+
+      $('#useDefaultPreferences').click(function() {
+          $.getJSON("{% url 'get_default_preferences' %}", function(data) {
+              var preference = data.default_preferences;
+              $('input[name="preferences"]').each(function() {
+                  if ($(this).val() == preference) {
+                      $(this).prop('checked', true);
+                  }
+              });
+              console.log(data);
+          });
+      });
+  });
+</script>
+
+{% endblock %}

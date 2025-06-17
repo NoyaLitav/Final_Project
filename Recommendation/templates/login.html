@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}App Sign Up{% endblock %}
+
+{% block extra_styles %}
+   {% load static %}
+    <style>
+    body {
+        background-image: url("{% static 'images/Indoor_parking_lot_entry_new.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        height: 100%;
+        margin: 0;
+    }
+    .header h1 {
+      font-weight: bold;
+      font-size: 3em;
+    }
+    .button-container {
+      margin-top: 10px;
+      text-align: right;
+      margin-right: 8px;
+    }
+    .button-container button {
+      margin-left: 10px;
+    }
+    </style>
+{% endblock %}
+
+{% block content %}
+<main>
+<head class="w3-display-container w3-content" style="max-width:1500px;">
+  <img class="w3-image" style="min-width:1000px" width="1600" height="800">
+  <div class="w3-display-middle w3-padding w3-col l6 m8">
+    <div class="header">
+    <div class="container">
+      <h1>Login</h1>
+    </div>
+    </div>
+
+    <div class="w3-container w3-white w3-padding-16">
+      <form class='loginForm' action="{% url 'login' %}" name="SignForm" method="post" style='margin-top: 0px;'>
+        {% csrf_token %}
+
+        <div class="w3-row-padding" style="margin:8 -16px;">
+          <div class="w3-margin-bottom">
+            <label class='label' for="username"><i class="fa fa-street-view w3-text" style="width:20px"></i>Username</label>
+            <input type="text" placeholder="Username" name="username" id="username" class='w3-input w3-border' autocomplete="off" maxlength="32" required="">
+          </div>
+          <div class="w3-margin-bottom">
+            <label class='label' for="password"><i class="fa fa-lock w3-text" style="width:20px"></i>Password</label>
+            <input type="password" placeholder="Password" name="password" id="password" class='w3-input w3-border' maxlength="150" required="">
+          </div>
+        </div>
+
+        {% if login_error %}
+        <div class="w3-row-padding" style="margin:0 -16px;">
+          <div class="w3-half w3-margin-bottom">
+            <span class="w3-text-red">{{ login_error }}</span>
+          </div>
+        </div>
+        {% endif %}
+
+        <div class="button-container">
+          <a class="w3-button w3-light-grey" href="{% url 'signup' %}">New User? Sign Up</a>
+          <button class="w3-button w3-dark-grey">Login</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</head>
+</main>
+{% endblock %}

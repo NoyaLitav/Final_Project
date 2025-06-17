@@ -1,0 +1,31 @@
+/* General styles for the table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    direction: rtl; /* Set text direction to right-to-left */
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+    text-align: center; /* Center align column header text */
+}
+
+td {
+    text-align: center; /* Center align column text */
+}
+
+/* Left-to-right text alignment for specific columns */
+.ltr-text {
+    direction: ltr;
+    text-align: center;
+}
+

@@ -1,0 +1,43 @@
+.destinationForm {
+    padding-left: 16px;
+    padding-right: 16px; /* Also ensuring the right padding is 16px for uniformity */
+    position: relative; /* Ensure relative positioning for the submit button's absolute positioning */
+}
+
+.location {
+    margin-left: 80px; /* Adjust the value as needed to move the div to the right */
+}
+
+.welcome-container {
+    margin-bottom: 20px; /* Add margin to separate the welcome message from other elements */
+}
+
+.bold-label {
+    font-weight: bold; /* Make labels with this class bold */
+}
+
+/* Adjust the size of the Use Default Address button */
+button#useDefaultAddress {
+    margin-left: 5px; /* Adjust margin as needed */
+    width: 100%; /* Set width to 100% for responsiveness */
+    height: 30px; /* Set a fixed height */
+    font-size: 14px; /* Set font size */
+    padding: 5px; /* Adjust padding as needed */
+    margin-bottom: 5px; /* Adjust the margin as needed */
+}
+
+/* Adjust the size of the Use Default Preferences button */
+button#useDefaultPreferences {
+    margin-left: 5px; /* Adjust margin as needed */
+    width: 100%; /* Set width to 100% for responsiveness */
+    height: 30px; /* Set a fixed height */
+    font-size: 14px; /* Set font size */
+    padding: 5px; /* Adjust padding as needed */
+}
+
+/* Positioning the submit button at the bottom right of the form */
+.submit-button {
+    position: absolute;
+    bottom: 16px;
+    right: 10px;
+}

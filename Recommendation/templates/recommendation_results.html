@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+
+{% block title %}Parking Recommendation{% endblock %}
+
+{% block extra_styles %}
+    {% load static %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+    body {
+        background-image: url("{% static 'images/homepage.png' %}");
+        background-size: cover;
+        background-position: center;
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 25vh; /* Adjust height to allocate space for the header */
+        padding: 20px; /* Add some padding if necessary */
+    }
+    .header h1 {
+        font-weight: bold;
+        font-size: calc(2.5rem + 1vw); /* Responsive font size */
+        white-space: nowrap; /* Prevent wrapping */
+    }
+    .content-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 800px; /* Adjust max width as needed */
+    }
+    .parking-container {
+        background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+        border-radius: 8px; /* Rounded corners */
+        padding: 15px; /* Space inside the container */
+        margin: 10px 0; /* Space between containers */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        width: 52%; /* Full width of the content wrapper */
+        font-size: 14px; /* Adjust font size */
+    }
+    .parking-container h3, .parking-container h4 {
+        margin: 0 0 2px; /* Margin below the headings */
+    }
+
+    .karantina-regular-destination {
+      font-family: "Karantina", system-ui;
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    .karantina-regular {
+      font-family: "Karantina", system-ui;
+      font-weight: 400;
+      font-style: normal;
+      text-align: right; /* Right-align text */
+      direction: rtl; /* Right-to-left text direction */
+    }
+
+    .karantina-bold {
+      font-family: "Karantina", system-ui;
+      font-weight: 700;
+      font-style: normal;
+      direction: rtl; /* Right-to-left text direction */
+      text-align: right; /* Right-align text */
+    }
+
+    .destination-line {
+        display: flex;
+        align-items: center;
+    }
+
+    .w3-bar-item.w3-button.w3-red.w3-mobile.updated {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 20px;
+        margin-top: 20px;
+        font-family: "Karantina", system-ui;
+    }
+
+    .icon-spacing {
+        margin-right: 10px; /* Adjust the margin as needed */
+    }
+
+    /* Modal styles */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 30px;
+        border: 1px solid #888;
+        width: 30%;
+        height: 55%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Vertically center the content */
+        align-items: center; /* Horizontally center the content */
+    }
+
+    /* Center the success message when shown */
+    .centered-message {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        font-size: 1.2rem;
+        text-align: center;
+        color: #333;
+    }
+
+    .karantina-modal {
+      font-family: "Karantina", system-ui;
+      font-weight: 450;
+      font-style: normal;
+      direction: rtl; /* Right-to-left text direction */
+      text-align: center;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .selected {
+        background-color: #b55f4e !important; /* Highlight selected button */
+    }
+
+    .parking-button {
+        display: block; /* Make buttons appear one under the other */
+        width: 300px; /* Full width */
+        margin: 10px 0; /* Space between buttons */
+        font-family: "Karantina", system-ui;
+        font-weight: 450;
+        padding: 15px; /* Add padding to increase height */
+        box-sizing: border-box; /* Ensure padding doesn't overflow */
+        text-align: center;
+    }
+
+    .thank-you-message {
+        display: none;
+        font-size: 1.5rem;
+    }
+        
+    </style>
+{% endblock %}
+
+{% block extra_nav_items %}
+    <a href="#contact" class="w3-bar-item w3-button w3-right w3-light-grey w3-mobile"><i class="fa fa-search w3-margin-right"></i>New search</a>
+{% endblock %}
+
+{% block content %}
+
+<main>
+<div class="w3-display-container w3-content" style="max-width:1500px;">
+  <img class="w3-image" style="min-width:1000px" width="1600" height="800">
+  <div class="w3-display-middle w3-padding w3-col l6 m8">
+    <div class="header">
+        <div class="container">
+            <h1>Recommended Parking Spots for You!</h1>
+            <h5> Day and time: {{ current_datetime }}</h5>
+            <div class="destination-line">
+                <h5>Destination</h5><h5 class="karantina-regular-destination">: {{ destination }}</h5>
+            </div>
+        </div>
+    </div>
+    <div class="content-wrapper">
+      {% if results %}
+          {% for lot in results %}
+              <div class="parking-container">
+                  <h4 class="karantina-bold">{{ lot.parking_lot_name }}</h4>
+                  <h5 class="karantina-regular">{{ lot.parking_lot_address }}</h5>
+                  {% if parking_duration == "short-term" %}
+                      <h6 class="karantina-regular">Estimated cost: {{ lot.cost_2_hours }} ₪, Walking distance: {{ lot.walking_time }} mins</h6>
+                  {% else %}
+                      <h6 class="karantina-regular">Estimated cost: {{ lot.cost_12_hours }} ₪, Walking distance: {{ lot.walking_time }} mins</h6>
+                  {% endif %}
+              </div>
+          {% endfor %}
+      {% else %}
+          <p>Couldn't find walking distance</p>
+      {% endif %}
+      <a href="javascript:void(0)" class="w3-bar-item w3-button w3-red w3-mobile updated" id="finishParkingSearch">
+        <i class="fa fa-check icon-spacing"></i><h3>Finish Parking Search</h3>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+  <div class="modal-content" id="modalContent">
+    <span class="close">&times;</span>
+    <h4 class="selection-message"><i class="far fa-smile"></i><br>Thank you for using our parking recommendation system!<br>Please select the parking lot you used:</h4>
+    {% if results %}
+    <form id="saveChoiceForm" method="post" action="{% url 'save_user_choice' %}">
+        {% csrf_token %}
+        {% for lot in results %}
+            <button type="button" class="w3-button w3-dark-grey parking-button" onclick="submitChoice('{{ lot.parking_lot_name }}', '{{ lot.parking_lot_code }}')">
+                <h3 class="karantina-modal">{{ lot.parking_lot_name }}</h3>
+            </button>
+        {% endfor %}
+        <button type="button" class="w3-button w3-dark-grey parking-button" onclick="submitChoice('אחר', 'other_code')">
+          <h3 class="karantina-modal">אחר</h3>
+        </button>
+        <input type="hidden" name="parking_lot_name" id="parkingLotName">
+        <input type="hidden" name="parking_lot_code" id="parkingLotCode">
+        <input type="hidden" name="parking_history_id" value="{{ parking_history_id }}">
+        <br>
+    </form>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  function submitChoice(parkingLotName, parkingLotCode) {
+    document.getElementById('parkingLotName').value = parkingLotName;
+    document.getElementById('parkingLotCode').value = parkingLotCode;
+
+    // Submit the form
+    document.getElementById('saveChoiceForm').submit();
+
+    // Replace the modal content with a success message
+    var modalContent = document.getElementById('modalContent');
+    modalContent.innerHTML = '<h4 class="karantina-modal"><i class="fa fa-refresh"></i><br>Thanks! Your choice has been saved, redirecting you to a new parking search</h4>';
+
+    // Delay the redirection to give the user time to see the message
+    setTimeout(function(){
+      window.location.href = "{% url 'destination' username=username %}";  // Redirect to a new parking search
+    }, 5000);  // Delay for 3 seconds
+  }
+
+  // Get the modal
+  var modal = document.getElementById("myModal");
+
+  // Get the button that opens the modal
+  var btn = document.getElementById("finishParkingSearch");
+
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+
+  // When the user clicks the button, open the modal
+  btn.onclick = function() {
+    modal.style.display = "block";
+  }
+
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+</script>
+
+{% endblock %}
+</main>
