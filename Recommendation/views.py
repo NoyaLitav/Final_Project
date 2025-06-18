@@ -15,7 +15,7 @@ from scipy.sparse import csr_matrix
 
 
 
-gmaps = Client(key='AIzaSyA1wuLzDKX3kRLMKo4fXekDjwGmEDxmuxo')
+gmaps = Client(key='AIzaSyALf9vZ3aBoQWeVn4kN-gRCS77V3PU8AFU')
 
 def signup(request):
     if request.method == "POST":
